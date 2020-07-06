@@ -50,7 +50,7 @@ podTemplate(
         }
         stage('Deploy') {
             container('helm') {
-                sh "helm install --set-file properties.file.base=./conf/config/${pipelineParams.PROJECT_NAME}/${pipelineParams.PROJECT_NAME}.yml,properties.file.env=./conf/config/${pipelineParams.PROJECT_NAME}/${pipelineParams.PROJECT_NAME}-${env.ENVIRONMENT}.yml ${pipelineParams.PROJECT_NAME} ./${pipelineParams.HELM_CHART_NAME}"
+                sh "helm install --debug --dry-run --set-file properties.file.base=./conf/config/${pipelineParams.PROJECT_NAME}/${pipelineParams.PROJECT_NAME}.yml,properties.file.env=./conf/config/${pipelineParams.PROJECT_NAME}/${pipelineParams.PROJECT_NAME}-${env.ENVIRONMENT}.yml ${pipelineParams.PROJECT_NAME} ./${pipelineParams.HELM_CHART_NAME}"
             }
         }
     }
