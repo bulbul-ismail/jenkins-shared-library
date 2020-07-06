@@ -12,8 +12,8 @@ podTemplate(
     label: label, 
     serviceAccount: serviceAccount,
     containers: [
-        containerTemplate(name: 'maven', image: mavenImage, command: 'cat', ttyEnabled: true),
-        containerTemplate(name: 'docker', image: 'docker' command: 'cat', ttyEnabled: true),
+        containerTemplate(name: 'maven', image: 'maven', command: 'cat', ttyEnabled: true),
+        containerTemplate(name: 'docker', image: 'docker', command: 'cat', ttyEnabled: true),
         containerTemplate(name: 'helm', image: 'lachlanevenson/k8s-helm:latest', command: 'cat', ttyEnabled: true)
     ],
     imagePullSecrets: ["${env.REGISTRY_SECRET}"],
