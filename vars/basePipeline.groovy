@@ -6,14 +6,14 @@ def call(body) {
 
 def label = "worker-${UUID.randomUUID().toString()}"
 def serviceAccount = "${env.SERVICE_ACCOUNT}"
-def mavenImage = "${env.MAVEN_IMAGE}"
+def mavenImage = "${pipelineParams.MAVEN_IMAGE}"
 
 podTemplate(
     label: label, 
     serviceAccount: serviceAccount,
     containers: [
         containerTemplate(name: 'maven', image: mavenImage, command: 'cat', ttyEnabled: true),
-        containerTemplate(name: 'docker', image: 'docker' command: 'cat', ttyEnabled: true),
+        containerTemplate(name: 'docker', image: 'docker', command: 'cat', ttyEnabled: true),
         containerTemplate(name: 'helm', image: 'lachlanevenson/k8s-helm:latest', command: 'cat', ttyEnabled: true)
     ],
     imagePullSecrets: ["${env.REGISTRY_SECRET}"],
@@ -32,7 +32,7 @@ podTemplate(
         }
         stage('Docker build') {
             container('docker') {
-               customImage = docker.build("${env.IMAGE_REGISTRY}/${env.IMAGE_REGISTRY_REPOSITORY_NAME}/${env.PROJECT_NAME}:${env.BUILD_ID}")
+               customImage = docker.build("${env.IMAGE_REGISTRY}/${env.IMAGE_REGISTRY_REPOSITORY_NAME}/${pipelineParams.PROJECT_NAME}:${env.BUILD_ID}")
             }
         }
         stage('Docker push') {
@@ -50,7 +50,7 @@ podTemplate(
         }
         stage('Deploy') {
             container('helm') {
-                sh "helm install --set-file properties.file.base=./conf/config/${env.PROJECT_NAME}/${env.PROJECT_NAME}.yml,properties.file.env=./conf/config/${env.PROJECT_NAME}/${env.PROJECT_NAME}-${env.ENVIRONMENT}.yml ${env.PROJECT_NAME} ./${env.HELM_CHART_NAME}"
+                sh "helm install --set-file properties.file.base=./conf/config/${pipelineParams.PROJECT_NAME}/${pipelineParams.PROJECT_NAME}.yml,properties.file.env=./conf/config/${pipelineParams.PROJECT_NAME}/${pipelineParams.PROJECT_NAME}-${env.ENVIRONMENT}.yml ${pipelineParams.PROJECT_NAME} ./${pipelineParams.HELM_CHART_NAME}"
             }
         }
     }
