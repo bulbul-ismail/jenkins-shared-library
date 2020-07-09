@@ -38,13 +38,13 @@ podTemplate(
         stage('Docker push') {
             container('docker') {
                 docker.withRegistry("${env.IMAGE_REGISTRY_URL}", "${env.IMAGE_REGISTRY_CREDENTIAL_ID}") {
-                    //customImage.push()
+                    customImage.push()
                 }
             }
         }
         stage('Deploy') {
             container('helm') {
-                sh "helm install --debug --dry-run ${pipelineParams.PROJECT_NAME} ./${pipelineParams.HELM_CHART_NAME}"
+                sh "helm install ${pipelineParams.PROJECT_NAME} ./${pipelineParams.HELM_CHART_NAME}"
             }
         }
     }
