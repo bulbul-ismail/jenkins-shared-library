@@ -19,7 +19,8 @@ podTemplate(
     ],
     imagePullSecrets: ["${env.REGISTRY_SECRET}"],
     volumes: [
-        hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock')
+        hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock'),
+        hostPathVolume(mountPath: '/tmp/maven', hostPath: '/tmp/maven')
     ]
 ) {
     node(label) {
