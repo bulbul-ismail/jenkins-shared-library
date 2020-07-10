@@ -52,7 +52,7 @@ podTemplate(
         stage('Deploy') {
             container('helm') {
                 dir(subDirectory){
-                    sh "helm install --debug --dry-run ${pipelineParams.PROJECT_NAME} ./${pipelineParams.HELM_CHART_NAME}"
+                    sh "helm install ${pipelineParams.PROJECT_NAME} ./${pipelineParams.HELM_CHART_NAME}"
                 }
             }
         }
