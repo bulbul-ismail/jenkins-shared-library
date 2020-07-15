@@ -20,7 +20,7 @@ podTemplate(
     imagePullSecrets: ["${env.REGISTRY_SECRET}"],
     volumes: [
         hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock'),
-        hostPathVolume(mountPath: '/tmp/maven', hostPath: '/tmp/maven')
+        persistentVolumeClaim(claimName: 'maven-claim', mountPath: '/tmp/maven')
     ]
 ) {
     node(label) {
