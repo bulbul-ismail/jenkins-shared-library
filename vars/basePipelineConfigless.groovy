@@ -47,7 +47,7 @@ podTemplate(
             container('helm') {
                 sh "helm repo add jfrog-repo ${env.HELM_REPO_URL} --username ${env.HELM_REPO_USERNAME} --password ${env.HELM_REPO_PASSWORD}"
                 sh "helm repo update"
-                sh "helm install ${pipelineParams.PROJECT_NAME} ${pipelineParams.HELM_CHART_NAME} --version ${pipelineParams.HELM_CHART_VERSION} -f values.yaml --set image.tag=${env.BUILD_ID}"
+                sh "helm upgrade --install ${pipelineParams.PROJECT_NAME} ${pipelineParams.HELM_CHART_NAME} --version ${pipelineParams.HELM_CHART_VERSION} -f values.yaml --set image.tag=${env.BUILD_ID}"
             }
         }
     }
