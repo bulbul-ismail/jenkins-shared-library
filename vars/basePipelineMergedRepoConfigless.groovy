@@ -53,7 +53,9 @@ podTemplate(
         stage('Deploy') {
             container('helm') {
                 dir(subDirectory){
-                    sh "helm install ${pipelineParams.PROJECT_NAME} ./${pipelineParams.HELM_CHART_NAME}"
+                    sh "helm repo add jfrog-repo ${env.HELM_REPO_URL} --username ${env.HELM_REPO_USERNAME} --password ${env.HELM_REPO_PASSWORD}"
+                    sh "helm repo update"
+                    sh "helm upgrade --install ${pipelineParams.PROJECT_NAME} ${pipelineParams.HELM_CHART_NAME} --version ${pipelineParams.HELM_CHART_VERSION} -f values.yaml --set image.tag=${env.BUILD_ID}"
                 }
             }
         }
