@@ -45,7 +45,7 @@ podTemplate(
             container('docker') {
                 dir(subDirectory){
                     docker.withRegistry("${env.IMAGE_REGISTRY_URL}", "${env.IMAGE_REGISTRY_CREDENTIAL_ID}") {
-                        customImage.push()
+                        //customImage.push()
                     }
                 }
             }
